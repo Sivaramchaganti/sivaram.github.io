@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shiva | Creative Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .typing-effect {
+            overflow: hidden; /* Ensures the content is not revealed until the animation */
+            border-right: .15em solid orange; /* The typwriter cursor */
+            white-space: nowrap; /* Keeps the content on a single line */
+            margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+            letter-spacing: .15em; /* Adjust as needed */
+            animation:
+                typing 3.5s steps(40, end) forwards,
+                blink-caret .75s step-end infinite;
+        }
+
+        /* The typing animation effect */
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        /* The typewriter cursor effect */
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: orange; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <span class="logo">✨</span>
+                <span class="logo-text">Portfolio</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#projects" class="nav-link">Projects</a></li>
+                <li><a href="#skills" class="nav-link">Skills</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <button class="menu-toggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Welcome Section -->
+    <section id="home" class="welcome-section">
+        <div class="container">
+            <div class="welcome-content">
+                <div class="welcome-text">
+                    <h1 class="welcome-title">
+                        <span class="wave">👋</span> Hello, I'm <span class="highlight">Leela Venkata Siva Rama Krishna Chaganti
+                        </span>
+                    </h1>
+                    <p class="welcome-subtitle">
+                        <span class="typing-effect">  A passionate web developer</span>
+                    </p>
+                    <p class="welcome-description">
+                        Welcome to my digital space! 🚀 I create beautiful, functional, and user-friendly experiences. 
+                        Let's build something amazing together! 💡
+                    </p>
+                    <div class="welcome-buttons">
+                        <a href="#projects" class="btn btn-primary">View My Work 🎨</a>
+                        <a href="#contact" class="btn btn-secondary">Get In Touch 📧</a>
+                    </div>
+                </div>
+                <div class="welcome-image">
+                    <div class="floating-card">
+                        <div class="card-icon">💻</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <span>↓</span>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <h2 class="section-title">
+                <span class="section-icon">👨‍💻</span> About Me
+            </h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p class="about-intro">
+                        I'm a creative Web developer with a passion for turning ideas into reality through code and design. 
+                        🎯 I love solving complex problems and creating elegant solutions.
+                    </p>
+                    <div class="about-details">
+                        <div class="detail-item">
+                            <span class="detail-icon">🎓</span>
+                            <div>
+                                <h3>Education</h3>
+                                <p>MSc in Artificial Intelligence and Data Science</p>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">💼</span>
+                            <div>
+                                <h3>Experience</h3>
+                                <p>2+ years building amazing products</p>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">🎨</span>
+                            <div>
+                                <h3>Passion</h3>
+                                <p>UI/UX Design & Development</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-stats">
+                    <div class="stat-card">
+                        <div class="stat-number">5+</div>
+                        <div class="stat-label">Projects Completed 🎉</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">10+</div>
+                        <div class="stat-label">Happy Clients 😊</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">2+</div>
+                        <div class="stat-label">Years Experience ⭐</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="skills-section">
+        <div class="container">
+            <h2 class="section-title">
+                <span class="section-icon">🛠️</span> Skills & Technologies
+            </h2>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <div class="skill-icon">🌐</div>
+                    <h3>Frontend</h3>
+                    <p>React,  HTML, CSS, JavaScript</p>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">⚙️</div>
+                    <h3>Backend</h3>
+                    <p>Node.js, Python,  APIs</p>
+                </div>
+              <!--  <div class="skill-card">
+                    <div class="skill-icon">📱</div>
+                    <h3>Mobile</h3>
+                    <p>React Native, Flutter</p> 
+                </div>-->
+                <div class="skill-card">
+                    <div class="skill-icon">🎨</div>
+                    <h3>Design</h3>
+                    <p>Figma, Adobe XD, UI/UX</p>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">🗄️</div>
+                    <h3>Database</h3>
+                    <p>MongoDB, PostgreSQL, Firebase</p>
+                </div>
+              <!--  <div class="skill-card">
+                    <div class="skill-icon">☁️</div>
+                    <h3>DevOps</h3>
+                    <p>Docker, AWS, CI/CD</p>
+                </div>-->
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects-section">
+        <div class="container">
+            <h2 class="section-title">
+                <span class="section-icon">🚀</span> Featured Projects
+            </h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-image">
+                        <div class="project-placeholder">🎯</div>
+                    </div>
+                    <div class="project-content">
+                        <h3>E-Commerce Platform</h3>
+                        <p>A full-stack e-commerce solution with modern UI and seamless shopping experience.</p>
+                        <div class="project-tags">
+                            <span>React</span>
+                            <span>Node.js</span>
+                            <span>MongoDB</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="ecommerce_listing.html" class="project-link">Live Demo 🔗</a>
+                            <a href="#" class="project-link">GitHub 💻</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">
+                        <div class="project-placeholder">📊</div>
+                    </div>
+                    <div class="project-content">
+                        <h3>Analytics Dashboard</h3>
+                        <p>Real-time data visualization dashboard with interactive charts and graphs.</p>
+                        <div class="project-tags">
+                            <span>ML</span>
+                            <span>Analytics</span>
+                            <span>Python</span>
+                            <span>Excel</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-link">Live Demo 🔗</a>
+                            <a href="#" class="project-link">GitHub 💻</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="project-card">
+                    <div class="project-image">
+                        <div class="project-placeholder">🎮</div>
+                    </div>
+                   <div class="project-content">
+                        <h3>Game Application</h3>
+                        <p>An engaging mobile game built with React Native and beautiful animations.</p>
+                         <div class="project-tags">
+                            <span>React Native</span>
+                            <span>TypeScript</span>
+                            <span>Firebase</span>
+                        </div> 
+                        <div class="project-links">
+                            <a href="#" class="project-link">Live Demo 🔗</a>
+                            <a href="#" class="project-link">GitHub 💻</a>
+                        </div>
+                    </div>
+                </div>-->
+                <div class="project-card">
+                    <div class="project-image">
+                        <div class="project-placeholder">🌍</div>
+                    </div>
+                    <div class="project-content">
+                        <h3>Social Media App</h3>
+                        <p>Connect with friends and share moments in this modern social platform.</p>
+                        <div class="project-tags">
+                            <span>React</span>
+                            <span>Express</span>
+                            <span>PostgreSQL</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-link">Live Demo 🔗</a>
+                            <a href="#" class="project-link">GitHub 💻</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <h2 class="section-title">
+                <span class="section-icon">💬</span> Get In Touch
+            </h2>
+            <p class="contact-intro">
+                Have a project in mind? Let's collaborate and bring your ideas to life! 🎨✨
+            </p>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <span class="contact-icon">📧</span>
+                        <div>
+                            <h3>Email</h3>
+                            <p>sivaramchaganti225@gmail.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">📱</span>
+                        <div>
+                            <h3>Phone</h3>
+                            <p>+44 7823915341</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">📍</span>
+                        <div>
+                            <h3>Location</h3>
+                            <p>Hounslow, London, UK</p>
+                        </div>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" class="social-link" aria-label="GitHub">💻</a>
+                        <a href="#" class="social-link" aria-label="LinkedIn">💼</a>
+                        <a href="#" class="social-link" aria-label="Twitter">🐦</a>
+                        <a href="#" class="social-link" aria-label="Instagram">📷</a>
+                    </div>
+                </div>
+                <form class="contact-form">
+                    <div class="form-group">
+                        <input type="text" placeholder="Your Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" placeholder="Your Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" placeholder="Subject" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea rows="5" placeholder="Your Message" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send Message 📤</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>Made with ❤️ and ☕ | © 2024 Portfolio. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+

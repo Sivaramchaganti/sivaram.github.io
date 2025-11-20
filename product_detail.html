@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Detail Page</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your main stylesheet -->
+    <style>
+        /* Basic layout for demonstration */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+        .header {
+            background-color: #333;
+            color: white;
+            padding: 1rem 0;
+            text-align: center;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        .product-detail-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            padding: 40px 0;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        .product-image-gallery {
+            flex: 1;
+            min-width: 300px;
+            max-width: 500px;
+        }
+        .product-image-gallery img {
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .product-info {
+            flex: 2;
+            min-width: 300px;
+            max-width: 600px;
+        }
+        .product-info h1 {
+            font-size: 2.5em;
+            margin-top: 0;
+            color: #333;
+        }
+        .product-info .price {
+            font-size: 1.8em;
+            color: #e44d26;
+            margin-bottom: 20px;
+        }
+        .product-info .description {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .quantity-selector label {
+            margin-right: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+        .quantity-selector input {
+            width: 50px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+            -moz-appearance: textfield;
+        }
+        .quantity-selector input::-webkit-outer-spin-button,
+        .quantity-selector input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        .buy-button {
+            background-color: #28a745; /* Green */
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: background-color 0.3s ease;
+        }
+        .buy-button:hover {
+            background-color: #218838;
+        }
+        /* Reuse product card star rating styles for consistency */
+        .star-rating {
+            color: #ffc107; /* Gold color for stars */
+            margin-bottom: 15px;
+        }
+        .star {
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>Product Details</h1>
+            <div class="cart-icon">
+                <a href="#" id="open-cart">🛒 <span id="cart-count">0</span></a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="product-detail-section" data-product-id="product-detail-1">
+            <div class="product-image-gallery">
+                <img src="https://via.placeholder.com/500x500/FF5733/FFFFFF?text=Product+Detail" alt="Product Image">
+            </div>
+            <div class="product-info">
+                <h1 id="product-title">Stylish Watch</h1>
+                <div class="star-rating">
+                    <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">☆</span> (4.5/5 stars)
+                </div>
+                <p class="price">$<span id="product-price">120.00</span></p>
+                <p class="description">This is a high-quality stylish watch with a durable strap and precise timekeeping. Perfect for everyday wear or special occasions. Features include water resistance and a sleek design.</p>
+                <div class="quantity-selector">
+                    <label for="quantity">Quantity:</label>
+                    <input type="number" id="quantity" value="1" min="1">
+                </div>
+                <button class="buy-button" id="add-to-cart-detail">Add to Cart</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Cart Modal -->
+    <div id="cart-modal" class="cart-modal">
+        <div class="cart-modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Your Shopping Cart</h2>
+            <ul id="cart-items" class="cart-items">
+                <!-- Cart items will be dynamically added here -->
+            </ul>
+            <div class="cart-total">
+                Total: $<span id="cart-total-price">0.00</span>
+            </div>
+            <button class="add-to-cart">Checkout</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+            const cartModal = document.getElementById('cart-modal');
+            const openCartButton = document.getElementById('open-cart');
+            const closeButton = document.querySelector('.close-button');
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartTotalPriceElement = document.getElementById('cart-total-price');
+            const addToCartDetailButton = document.getElementById('add-to-cart-detail');
+            const quantityInput = document.getElementById('quantity');
+            const productDetailSection = document.querySelector('.product-detail-section');
+
+            function updateCartCount() {
+                const cartCountElement = document.getElementById('cart-count');
+                if (cartCountElement) {
+                    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+                    cartCountElement.textContent = totalItems;
+                }
+            }
+
+            function calculateCartTotal() {
+                return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+            }
+
+            function renderCartItems() {
+                cartItemsContainer.innerHTML = '';
+                if (cart.length === 0) {
+                    cartItemsContainer.innerHTML = '<li class="cart-item">Your cart is empty.</li>';
+                } else {
+                    cart.forEach(item => {
+                        const li = document.createElement('li');
+                        li.classList.add('cart-item');
+                        li.innerHTML = `
+                            <span>${item.title} (x${item.quantity})</span>
+                            <span>$${(item.price * item.quantity).toFixed(2)}</span>
+                        `;
+                        cartItemsContainer.appendChild(li);
+                    });
+                }
+                cartTotalPriceElement.textContent = calculateCartTotal().toFixed(2);
+            }
+
+            function saveCart() {
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCartCount();
+                renderCartItems();
+            }
+
+            openCartButton.addEventListener('click', (event) => {
+                event.preventDefault();
+                renderCartItems();
+                cartModal.style.display = 'block';
+            });
+
+            closeButton.addEventListener('click', () => {
+                cartModal.style.display = 'none';
+            });
+
+            window.addEventListener('click', (event) => {
+                if (event.target == cartModal) {
+                    cartModal.style.display = 'none';
+                }
+            });
+
+            if (addToCartDetailButton) {
+                addToCartDetailButton.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    const productId = productDetailSection.getAttribute('data-product-id');
+                    const productTitle = document.getElementById('product-title').textContent;
+                    const productPrice = parseFloat(document.getElementById('product-price').textContent);
+                    const quantity = parseInt(quantityInput.value);
+
+                    const existingItem = cart.find(item => item.id === productId);
+                    if (existingItem) {
+                        existingItem.quantity += quantity;
+                    } else {
+                        cart.push({ id: productId, title: productTitle, price: productPrice, quantity: quantity });
+                    }
+                    saveCart();
+                    alert(`${quantity} of ${productTitle} added to cart!`);
+                });
+            }
+
+            updateCartCount();
+        });
+    </script>
+</body>
+</html>

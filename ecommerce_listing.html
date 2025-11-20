@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Commerce Product Listing</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your main stylesheet -->
+    <style>
+        /* Basic layout for demonstration */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+        .header {
+            background-color: #333;
+            color: white;
+            padding: 1rem 0;
+            text-align: center;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        .main-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px 0;
+        }
+        /* Product Card styles will be integrated or imported */
+    </style>
+    <style>
+        /* Navigation Menu Styles */
+        .main-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            background-color: #444;
+        }
+        .main-nav ul li a {
+            display: block;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+        .main-nav ul li a:hover {
+            background-color: #555;
+        }
+
+        /* Search Bar Styles */
+        .search-bar {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        .search-bar input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+            width: 300px;
+        }
+        .search-bar button {
+            padding: 8px 15px;
+            border: 1px solid #e44d26;
+            background-color: #e44d26;
+            color: white;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+        /* Product Card specific styles for consistency */
+        .product-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            background-color: #fff;
+            overflow: hidden;
+            text-align: center;
+            padding-bottom: 15px;
+        }
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .product-details {
+            padding: 15px;
+        }
+        .product-title {
+            font-size: 1.2em;
+            margin: 10px 0;
+            color: #333;
+        }
+        .product-price {
+            font-size: 1.1em;
+            color: #e44d26;
+            margin-bottom: 15px;
+        }
+        .star-rating {
+            color: #ffc107;
+            margin-bottom: 10px;
+        }
+        .star {
+            font-size: 1.2em;
+        }
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            padding: 0 15px;
+        }
+        .add-to-cart {
+            background-color: #e44d26;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.3s ease;
+        }
+        .add-to-cart:hover {
+            background-color: #f06529;
+        }
+        .add-to-wishlist {
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: #dc3545;
+            transition: transform 0.2s ease;
+        }
+        .add-to-wishlist:hover {
+            transform: scale(1.2);
+        }
+    </style>
+    <style>
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .header h1 {
+            margin: 0;
+            flex-grow: 1;
+            text-align: left;
+        }
+        .cart-icon {
+            position: relative;
+            margin-left: 20px;
+        }
+        .cart-icon a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.5em;
+        }
+        #cart-count {
+            background-color: #e44d26;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 7px;
+            font-size: 0.7em;
+            position: absolute;
+            top: -10px;
+            right: -10px;
+        }
+        /* Cart Modal Styles */
+        .cart-modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+        .cart-modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 8px;
+            position: relative;
+        }
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .cart-items {
+            list-style: none;
+            padding: 0;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .cart-total {
+            font-size: 1.2em;
+            font-weight: bold;
+            text-align: right;
+            padding-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>My E-Commerce Store</h1>
+            <div class="search-bar">
+                <input type="text" placeholder="Search for products...">
+                <button>Search</button>
+            </div>
+            <div class="cart-icon">
+                <a href="#" id="open-cart">🛒 <span id="cart-count">0</span></a>
+            </div>
+        </div>
+    </header>
+
+    <nav class="main-nav">
+        <div class="container">
+            <ul>
+                <li><a href="#">Electronics</a></li>
+                <li><a href="#">Books</a></li>
+                <li><a href="#">Apparel</a></li>
+                <li><a href="#">Home & Kitchen</a></li>
+                <li><a href="#">Sports & Outdoors</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Cart Modal -->
+    <div id="cart-modal" class="cart-modal">
+        <div class="cart-modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Your Shopping Cart</h2>
+            <ul id="cart-items" class="cart-items">
+                <!-- Cart items will be dynamically added here -->
+            </ul>
+            <div class="cart-total">
+                Total: $<span id="cart-total-price">0.00</span>
+            </div>
+            <button class="add-to-cart">Checkout</button>
+        </div>
+    </div>
+
+    <main class="container main-content">
+        <a href="product_detail.html" class="product-card-link" data-product-id="product-1">
+            <div class="product-card">
+                <img src="https://via.placeholder.com/200/FF5733/FFFFFF?text=Product+1" alt="Product Image" class="product-image">
+                <div class="product-details">
+                    <h3 class="product-title">Stylish Watch</h3>
+                    <div class="star-rating">
+                        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">☆</span>
+                    </div>
+                    <p class="product-price">$120.00</p>
+                    <div class="actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="add-to-wishlist">❤️</button>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="product_detail.html" class="product-card-link" data-product-id="product-2">
+            <div class="product-card">
+                <img src="https://via.placeholder.com/200/33FF57/FFFFFF?text=Product+2" alt="Product Image" class="product-image">
+                <div class="product-details">
+                    <h3 class="product-title">Wireless Headphones</h3>
+                    <div class="star-rating">
+                        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+                    </div>
+                    <p class="product-price">$75.00</p>
+                    <div class="actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="add-to-wishlist">❤️</button>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="product_detail.html" class="product-card-link" data-product-id="product-3">
+            <div class="product-card">
+                <img src="https://via.placeholder.com/200/3357FF/FFFFFF?text=Product+3" alt="Product Image" class="product-image">
+                <div class="product-details">
+                    <h3 class="product-title">Smart Speaker</h3>
+                    <div class="star-rating">
+                        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">☆</span><span class="star">☆</span>
+                    </div>
+                    <p class="product-price">$50.00</p>
+                    <div class="actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="add-to-wishlist">❤️</button>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="product_detail.html" class="product-card-link" data-product-id="product-4">
+            <div class="product-card">
+                <img src="https://via.placeholder.com/200/FFFF33/000000?text=Product+4" alt="Product Image" class="product-image">
+                <div class="product-details">
+                    <h3 class="product-title">Gaming Mouse</h3>
+                    <div class="star-rating">
+                        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+                    </div>
+                    <p class="product-price">$35.00</p>
+                    <div class="actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="add-to-wishlist">❤️</button>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="product_detail.html" class="product-card-link" data-product-id="product-5">
+            <div class="product-card">
+                <img src="https://via.placeholder.com/200/FF9900/FFFFFF?text=Product+5" alt="Product Image" class="product-image">
+                <div class="product-details">
+                    <h3 class="product-title">Portable SSD</h3>
+                    <div class="star-rating">
+                        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+                    </div>
+                    <p class="product-price">$99.00</p>
+                    <div class="actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="add-to-wishlist">❤️</button>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="product_detail.html" class="product-card-link" data-product-id="product-6">
+            <div class="product-card">
+                <img src="https://via.placeholder.com/200/00CC99/FFFFFF?text=Product+6" alt="Product Image" class="product-image">
+                <div class="product-details">
+                    <h3 class="product-title">Ergonomic Keyboard</h3>
+                    <div class="star-rating">
+                        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">☆</span>
+                    </div>
+                    <p class="product-price">$80.00</p>
+                    <div class="actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="add-to-wishlist">❤️</button>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="product_detail.html" class="product-card-link" data-product-id="product-7">
+            <div class="product-card">
+                <img src="https://via.placeholder.com/200/CC66FF/FFFFFF?text=Product+7" alt="Product Image" class="product-image">
+                <div class="product-details">
+                    <h3 class="product-title">Smart Doorbell</h3>
+                    <div class="star-rating">
+                        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+                    </div>
+                    <p class="product-price">$150.00</p>
+                    <div class="actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="add-to-wishlist">❤️</button>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="product_detail.html" class="product-card-link" data-product-id="product-8">
+            <div class="product-card">
+                <img src="https://via.placeholder.com/200/FF00FF/FFFFFF?text=Product+8" alt="Product Image" class="product-image">
+                <div class="product-details">
+                    <h3 class="product-title">Robot Vacuum</h3>
+                    <div class="star-rating">
+                        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">☆</span>
+                    </div>
+                    <p class="product-price">$299.99</p>
+                    <div class="actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="add-to-wishlist">❤️</button>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="product_detail.html" class="product-card-link" data-product-id="product-9">
+            <div class="product-card">
+                <img src="https://via.placeholder.com/200/5733FF/FFFFFF?text=Product+9" alt="Product Image" class="product-image">
+                <div class="product-details">
+                    <h3 class="product-title">Noise-Cancelling Earbuds</h3>
+                    <div class="star-rating">
+                        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+                    </div>
+                    <p class="product-price">$129.99</p>
+                    <div class="actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="add-to-wishlist">❤️</button>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="product_detail.html" class="product-card-link" data-product-id="product-10">
+            <div class="product-card">
+                <img src="https://via.placeholder.com/200/FF33AA/FFFFFF?text=Product+10" alt="Product Image" class="product-image">
+                <div class="product-details">
+                    <h3 class="product-title">Smart Home Hub</h3>
+                    <div class="star-rating">
+                        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">☆</span>
+                    </div>
+                    <p class="product-price">$89.99</p>
+                    <div class="actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="add-to-wishlist">❤️</button>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="product_detail.html" class="product-card-link" data-product-id="product-11">
+            <div class="product-card">
+                <img src="https://via.placeholder.com/200/33AACC/FFFFFF?text=Product+11" alt="Product Image" class="product-image">
+                <div class="product-details">
+                    <h3 class="product-title">Portable Projector</h3>
+                    <div class="star-rating">
+                        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+                    </div>
+                    <p class="product-price">$199.99</p>
+                    <div class="actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="add-to-wishlist">❤️</button>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="product_detail.html" class="product-card-link" data-product-id="product-12">
+            <div class="product-card">
+                <img src="https://via.placeholder.com/200/AACC33/FFFFFF?text=Product+12" alt="Product Image" class="product-image">
+                <div class="product-details">
+                    <h3 class="product-title">Fitness Tracker</h3>
+                    <div class="star-rating">
+                        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">☆</span>
+                    </div>
+                    <p class="product-price">$49.99</p>
+                    <div class="actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="add-to-wishlist">❤️</button>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="product_detail.html" class="product-card-link" data-product-id="product-13">
+            <div class="product-card">
+                <img src="https://via.placeholder.com/200/CC33AA/FFFFFF?text=Product+13" alt="Product Image" class="product-image">
+                <div class="product-details">
+                    <h3 class="product-title">Electric Toothbrush</h3>
+                    <div class="star-rating">
+                        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+                    </div>
+                    <p class="product-price">$65.00</p>
+                    <div class="actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="add-to-wishlist">❤️</button>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="product_detail.html" class="product-card-link" data-product-id="product-14">
+            <div class="product-card">
+                <img src="https://via.placeholder.com/200/33FF57/FFFFFF?text=Product+14" alt="Product Image" class="product-image">
+                <div class="product-details">
+                    <h3 class="product-title">Instant Camera</h3>
+                    <div class="star-rating">
+                        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">☆</span>
+                    </div>
+                    <p class="product-price">$79.00</p>
+                    <div class="actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="add-to-wishlist">❤️</button>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="product_detail.html" class="product-card-link" data-product-id="product-15">
+            <div class="product-card">
+                <img src="https://via.placeholder.com/200/FF0055/FFFFFF?text=Product+15" alt="Product Image" class="product-image">
+                <div class="product-details">
+                    <h3 class="product-title">Drone with Camera</h3>
+                    <div class="star-rating">
+                        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+                    </div>
+                    <p class="product-price">$349.00</p>
+                    <div class="actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="add-to-wishlist">❤️</button>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="product_detail.html" class="product-card-link" data-product-id="product-16">
+            <div class="product-card">
+                <img src="https://via.placeholder.com/200/55FF00/FFFFFF?text=Product+16" alt="Product Image" class="product-image">
+                <div class="product-details">
+                    <h3 class="product-title">Portable Blender</h3>
+                    <div class="star-rating">
+                        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">☆</span>
+                    </div>
+                    <p class="product-price">$30.00</p>
+                    <div class="actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="add-to-wishlist">❤️</button>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="product_detail.html" class="product-card-link" data-product-id="product-17">
+            <div class="product-card">
+                <img src="https://via.placeholder.com/200/0000FF/FFFFFF?text=Product+17" alt="Product Image" class="product-image">
+                <div class="product-details">
+                    <h3 class="product-title">Wireless Charging Pad</h3>
+                    <div class="star-rating">
+                        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+                    </div>
+                    <p class="product-price">$25.00</p>
+                    <div class="actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="add-to-wishlist">❤️</button>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="product_detail.html" class="product-card-link" data-product-id="product-18">
+            <div class="product-card">
+                <img src="https://via.placeholder.com/200/FFCC00/FFFFFF?text=Product+18" alt="Product Image" class="product-image">
+                <div class="product-details">
+                    <h3 class="product-title">Smart Light Bulbs (4-pack)</h3>
+                    <div class="star-rating">
+                        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">☆</span>
+                    </div>
+                    <p class="product-price">$40.00</p>
+                    <div class="actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="add-to-wishlist">❤️</button>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="product_detail.html" class="product-card-link" data-product-id="product-19">
+            <div class="product-card">
+                <img src="https://via.placeholder.com/200/996633/FFFFFF?text=Product+19" alt="Product Image" class="product-image">
+                <div class="product-details">
+                    <h3 class="product-title">Espresso Machine</h3>
+                    <div class="star-rating">
+                        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+                    </div>
+                    <p class="product-price">$199.00</p>
+                    <div class="actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="add-to-wishlist">❤️</button>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="product_detail.html" class="product-card-link" data-product-id="product-20">
+            <div class="product-card">
+                <img src="https://via.placeholder.com/200/666666/FFFFFF?text=Product+20" alt="Product Image" class="product-image">
+                <div class="product-details">
+                    <h3 class="product-title">Air Fryer</h3>
+                    <div class="star-rating">
+                        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">☆</span>
+                    </div>
+                    <p class="product-price">$89.00</p>
+                    <div class="actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="add-to-wishlist">❤️</button>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="product_detail.html" class="product-card-link" data-product-id="product-21">
+            <div class="product-card">
+                <img src="https://via.placeholder.com/200/AA0000/FFFFFF?text=Product+21" alt="Product Image" class="product-image">
+                <div class="product-details">
+                    <h3 class="product-title">Smart Thermostat</h3>
+                    <div class="star-rating">
+                        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">☆</span>
+                    </div>
+                    <p class="product-price">$120.00</p>
+                    <div class="actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="add-to-wishlist">❤️</button>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="product_detail.html" class="product-card-link" data-product-id="product-22">
+            <div class="product-card">
+                <img src="https://via.placeholder.com/200/00FF00/FFFFFF?text=Product+22" alt="Product Image" class="product-image">
+                <div class="product-details">
+                    <h3 class="product-title">Smart Water Filter</h3>
+                    <div class="star-rating">
+                        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+                    </div>
+                    <p class="product-price">$150.00</p>
+                    <div class="actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="add-to-wishlist">❤️</button>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="product_detail.html" class="product-card-link" data-product-id="product-23">
+            <div class="product-card">
+                <img src="https://via.placeholder.com/200/0000FF/FFFFFF?text=Product+23" alt="Product Image" class="product-image">
+                <div class="product-details">
+                    <h3 class="product-title">Smart Lock</h3>
+                    <div class="star-rating">
+                        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">☆</span>
+                    </div>
+                    <p class="product-price">$180.00</p>
+                    <div class="actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="add-to-wishlist">❤️</button>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="product_detail.html" class="product-card-link" data-product-id="product-24">
+            <div class="product-card">
+                <img src="https://via.placeholder.com/200/FF00FF/FFFFFF?text=Product+24" alt="Product Image" class="product-image">
+                <div class="product-details">
+                    <h3 class="product-title">Smart Thermostat</h3>
+                    <div class="star-rating">
+                        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+                    </div>
+                    <p class="product-price">$120.00</p>
+                    <div class="actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="add-to-wishlist">❤️</button>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="product_detail.html" class="product-card-link" data-product-id="product-25">
+            <div class="product-card">
+                <img src="https://via.placeholder.com/200/FFCC00/FFFFFF?text=Product+25" alt="Product Image" class="product-image">
+                <div class="product-details">
+                    <h3 class="product-title">Smart Water Filter</h3>
+                    <div class="star-rating">
+                        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">☆</span>
+                    </div>
+                    <p class="product-price">$150.00</p>
+                    <div class="actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="add-to-wishlist">❤️</button>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="product_detail.html" class="product-card-link" data-product-id="product-26">
+            <div class="product-card">
+                <img src="https://via.placeholder.com/200/0000FF/FFFFFF?text=Product+26" alt="Product Image" class="product-image">
+                <div class="product-details">
+                    <h3 class="product-title">Smart Lock</h3>
+                    <div class="star-rating">
+                        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">☆</span>
+                    </div>
+                    <p class="product-price">$180.00</p>
+                    <div class="actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="add-to-wishlist">❤️</button>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="product_detail.html" class="product-card-link" data-product-id="product-27">
+            <div class="product-card">
+                <img src="https://via.placeholder.com/200/FF00FF/FFFFFF?text=Product+27" alt="Product Image" class="product-image">
+                <div class="product-details">
+                    <h3 class="product-title">Smart Thermostat</h3>
+                    <div class="star-rating">
+                        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+                    </div>
+                    <p class="product-price">$120.00</p>
+                    <div class="actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="add-to-wishlist">❤️</button>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="product_detail.html" class="product-card-link" data-product-id="product-28">
+            <div class="product-card">
+                <img src="https://via.placeholder.com/200/FFCC00/FFFFFF?text=Product+28" alt="Product Image" class="product-image">
+                <div class="product-details">
+                    <h3 class="product-title">Smart Water Filter</h3>
+                    <div class="star-rating">
+                        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">☆</span>
+                    </div>
+                    <p class="product-price">$150.00</p>
+                    <div class="actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="add-to-wishlist">❤️</button>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="product_detail.html" class="product-card-link">
+            <div class="product-card">
+                <img src="https://via.placeholder.com/200/00AAAA/FFFFFF?text=Product+29" alt="Product Image" class="product-image">
+                <div class="product-details">
+                    <h3 class="product-title">External Hard Drive</h3>
+                    <div class="star-rating">
+                        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">☆</span>
+                    </div>
+                    <p class="product-price">$70.00</p>
+                    <div class="actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="add-to-wishlist">❤️</button>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="product_detail.html" class="product-card-link">
+            <div class="product-card">
+                <img src="https://via.placeholder.com/200/5500AA/FFFFFF?text=Product+30" alt="Product Image" class="product-image">
+                <div class="product-details">
+                    <h3 class="product-title">Smart Thermostat</h3>
+                    <div class="star-rating">
+                        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+                    </div>
+                    <p class="product-price">$120.00</p>
+                    <div class="actions">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <button class="add-to-wishlist">❤️</button>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Cart array to store items
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+            const cartModal = document.getElementById('cart-modal');
+            const openCartButton = document.getElementById('open-cart');
+            const closeButton = document.querySelector('.close-button');
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartTotalPriceElement = document.getElementById('cart-total-price');
+
+            function updateCartCount() {
+                const cartCountElement = document.getElementById('cart-count');
+                if (cartCountElement) {
+                    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+                    cartCountElement.textContent = totalItems;
+                }
+            }
+
+            function calculateCartTotal() {
+                return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+            }
+
+            function renderCartItems() {
+                cartItemsContainer.innerHTML = ''; // Clear existing items
+                if (cart.length === 0) {
+                    cartItemsContainer.innerHTML = '<li class="cart-item">Your cart is empty.</li>';
+                } else {
+                    cart.forEach(item => {
+                        const li = document.createElement('li');
+                        li.classList.add('cart-item');
+                        li.innerHTML = `
+                            <span>${item.title} (x${item.quantity})</span>
+                            <span>$${(item.price * item.quantity).toFixed(2)}</span>
+                        `;
+                        cartItemsContainer.appendChild(li);
+                    });
+                }
+                cartTotalPriceElement.textContent = calculateCartTotal().toFixed(2);
+            }
+
+            function saveCart() {
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCartCount();
+                renderCartItems();
+            }
+
+            // Open Cart Modal
+            openCartButton.addEventListener('click', (event) => {
+                event.preventDefault();
+                renderCartItems();
+                cartModal.style.display = 'block';
+            });
+
+            // Close Cart Modal
+            closeButton.addEventListener('click', () => {
+                cartModal.style.display = 'none';
+            });
+
+            // Close modal if user clicks outside of it
+            window.addEventListener('click', (event) => {
+                if (event.target == cartModal) {
+                    cartModal.style.display = 'none';
+                }
+            });
+
+            document.querySelectorAll('.add-to-cart').forEach(button => {
+                button.addEventListener('click', (event) => {
+                    event.preventDefault(); // Prevent navigation if the card is a link
+                    const productCard = event.target.closest('.product-card-link');
+                    const productId = productCard.getAttribute('data-product-id');
+                    const productTitle = productCard.querySelector('.product-title').textContent;
+                    const productPrice = parseFloat(productCard.querySelector('.product-price').textContent.replace('$', ''));
+
+                    const existingItem = cart.find(item => item.id === productId);
+                    if (existingItem) {
+                        existingItem.quantity++;
+                    } else {
+                        cart.push({ id: productId, title: productTitle, price: productPrice, quantity: 1 });
+                    }
+                    saveCart();
+                    alert(`${productTitle} added to cart!`);
+                });
+            });
+
+            document.querySelectorAll('.add-to-wishlist').forEach(button => {
+                button.addEventListener('click', (event) => {
+                    event.preventDefault(); // Prevent navigation if the card is a link
+                    alert('Item added to wishlist!');
+                });
+            });
+            updateCartCount(); // Initialize cart count on page load
+        });
+    </script>
+</body>
+</html>
